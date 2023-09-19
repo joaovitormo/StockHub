@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "646948218831",
+    "project_id": "stockhub-778a5",
+    "storage_bucket": "stockhub-778a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:646948218831:android:d63aebef936500bbf454ba",
+        "android_client_info": {
+          "package_name": "com.joaovitormo.stockhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_L0M89iN43D6aWkjLYY_9lo2MdBCS_xU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
