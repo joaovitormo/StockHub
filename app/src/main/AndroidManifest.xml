@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
 
     <application
         android:allowBackup="true"
@@ -15,6 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StockHub"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.homePage.HomePageActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home_page">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activity.register.RegisterActivity"
             android:exported="false">

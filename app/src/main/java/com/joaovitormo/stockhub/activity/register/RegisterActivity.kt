@@ -1,8 +1,12 @@
 package com.joaovitormo.stockhub.activity.register
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseNetworkException
@@ -11,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.joaovitormo.stockhub.R
+import com.joaovitormo.stockhub.activity.login.LoginActivity
 import com.joaovitormo.stockhub.databinding.ActivityRegisterBinding
 
 class RegisterActivity : AppCompatActivity() {
@@ -47,6 +52,9 @@ class RegisterActivity : AppCompatActivity() {
                         snackbar.show()
                         binding.editEmail.setText("")
                         binding.editSenha.setText("")
+
+                        navToLogin()
+
                     }
                 }.addOnFailureListener { exception ->
                     val mensagemErro = when(exception){
@@ -55,6 +63,7 @@ class RegisterActivity : AppCompatActivity() {
                         is FirebaseAuthUserCollisionException -> "Esta conta já foi cadastrada!"
                         is FirebaseNetworkException -> "Sem conexão com a internet!"
                         else -> "Erro ao cadastrar usuário!"
+
                     }
                     val snackbar = Snackbar.make(it, mensagemErro, Snackbar.LENGTH_SHORT)
                     snackbar.setBackgroundTint(Color.RED)
@@ -66,5 +75,13 @@ class RegisterActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun navToLogin() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, 3000)
     }
 }

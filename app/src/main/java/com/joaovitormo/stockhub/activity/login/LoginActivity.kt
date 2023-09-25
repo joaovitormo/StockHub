@@ -10,6 +10,7 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.joaovitormo.stockhub.R
+import com.joaovitormo.stockhub.activity.homePage.HomePageActivity
 import com.joaovitormo.stockhub.activity.register.RegisterActivity
 import com.joaovitormo.stockhub.databinding.ActivityLoginBinding
 
@@ -62,14 +63,16 @@ class LoginActivity : AppCompatActivity() {
         binding.btTelacadastro.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+            //finish()
         }
     }
 
     private fun navegarTelaPrincipal() {
-        //val intent = Intent(this, TelaPrincipal::class.java)
+        val intent = Intent(this, HomePageActivity::class.java)
         startActivity(intent)
         finish()
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -80,4 +83,6 @@ class LoginActivity : AppCompatActivity() {
             navegarTelaPrincipal()
         }
     }
+
+
 }
