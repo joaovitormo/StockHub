@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.joaovitormo.stockhub.activity.homePage.HomePageActivity
+import com.joaovitormo.stockhub.activity.listProducts.ListProductsActivity
 import com.joaovitormo.stockhub.activity.login.LoginActivity
 import com.joaovitormo.stockhub.databinding.FragmentHomeBinding
 
@@ -43,12 +44,14 @@ class HomeFragment : Fragment() {
 
         val btLogout: Button = binding.btLogout
         btLogout.setOnClickListener {
-            Log.d("db", "Erro ao salvar os dados do usuário!")
             auth.signOut()
             backToLogin()
         }
 
-
+        val btListProducts: Button = binding.btProductList
+        btListProducts.setOnClickListener {
+            listProducts()
+        }
         return root
 
     }
@@ -62,7 +65,12 @@ class HomeFragment : Fragment() {
 
         val intent = Intent(activity, LoginActivity::class.java)
         startActivity(intent)
-        activity!!.finish()
+        requireActivity().finish()
+    }
+
+    fun listProducts() {
+        val intent = Intent(activity, ListProductsActivity::class.java)
+        startActivity(intent)
     }
 
 
