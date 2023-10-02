@@ -35,34 +35,27 @@ class ListProductsActivity : AppCompatActivity() {
     private fun products(){
         val product1 = Product("Cimento")
         listProducts.add(product1)
-
         val product2 = Product("Cimento2")
         listProducts.add(product2)
-
-        val product3 = Product("Cimento")
+        val product3 = Product("Cimento3")
         listProducts.add(product1)
-
-        val product4 = Product("Cimento2")
+        val product4 = Product("Cimento4")
         listProducts.add(product4)
-        val product5 = Product("Cimento")
+        val product5 = Product("Cimento5")
         listProducts.add(product5)
-
-        val product6 = Product("Cimento2")
+        val product6 = Product("Cimento6")
         listProducts.add(product6)
-        val product7 = Product("Cimento")
+        val product7 = Product("Cimento7")
         listProducts.add(product7)
-
-        val product8 = Product("Cimento2")
+        val product8 = Product("Cimento8")
         listProducts.add(product8)
-        val product9 = Product("Cimento")
+        val product9 = Product("Cimento9")
         listProducts.add(product9)
-
-        val product10 = Product("Cimento2")
+        val product10 = Product("Cimento10")
         listProducts.add(product10)
-        val product11 = Product("Cimento")
+        val product11 = Product("Cimento11")
         listProducts.add(product11)
-
-        val product12 = Product("Cimento2")
+        val product12 = Product("Cimento12")
         listProducts.add(product12)
 
     }
