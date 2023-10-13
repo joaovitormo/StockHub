@@ -2,15 +2,13 @@ package com.joaovitormo.stockhub.activity.listProducts
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.joaovitormo.stockhub.R
 import com.joaovitormo.stockhub.adapter.AdapterProducts
 import com.joaovitormo.stockhub.databinding.ActivityListProductsBinding
-import com.joaovitormo.stockhub.databinding.ProductItemBinding
 import com.joaovitormo.stockhub.model.Product
 
-class ListProductsActivity : AppCompatActivity() {
+class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEvent {
 
     private lateinit var binding: ActivityListProductsBinding
     private lateinit var adapterProducts: AdapterProducts
@@ -26,11 +24,14 @@ class ListProductsActivity : AppCompatActivity() {
         val recyclerViewProducts = binding.recyclerViewProducts
         recyclerViewProducts.layoutManager = LinearLayoutManager(this)
         recyclerViewProducts.setHasFixedSize(true)
-        adapterProducts = AdapterProducts(this, listProducts)
+        adapterProducts = AdapterProducts(this, listProducts, this)
         recyclerViewProducts.adapter = adapterProducts
         products()
 
+
     }
+
+
 
     private fun products(){
         val product1 = Product("Cimento")
@@ -81,5 +82,15 @@ class ListProductsActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onItemClick(position: Int) {
+        val product = listProducts[position]
+
+        Toast.makeText(
+            this,
+            product.name,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
