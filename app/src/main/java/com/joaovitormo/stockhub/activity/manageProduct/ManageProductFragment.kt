@@ -74,36 +74,10 @@ class ManageProductFragment : BottomSheetDialogFragment() {
             productID = it.getString(PRODUCT_ID, null)
         }
 
-
         Log.d("IDPRODUCT", productID.toString())
 
-
         productID?.let { findProduct(it) }
-
-
-/*
-        db.collection("products").orderBy("cName")
-            .addSnapshotListener(object  : EventListener<QuerySnapshot> {
-                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
-                    if (error != null)
-                    {
-                        Log.e("Firestore error", error.message.toString())
-                        return
-                    }
-
-                    for (dc: DocumentChange in value?.documentChanges!!){
-                        if (dc.type == DocumentChange.Type.ADDED){
-                            spinnerList.add(dc.document.getString("cName").toString())
-                        }
-                    }
-                    adapter.notifyDataSetChanged()
-
-                }
-            })
-*/
-
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -112,7 +86,6 @@ class ManageProductFragment : BottomSheetDialogFragment() {
         // Inflate the layout for this fragment
         binding = FragmentManageProductBinding.inflate(inflater,container,false)
         //return inflater.inflate(R.layout.fragment_manage_product, container, false)
-
 
         binding.saveButton.setOnClickListener {
             val cName = binding.name.text.toString()
@@ -127,6 +100,11 @@ class ManageProductFragment : BottomSheetDialogFragment() {
             Log.d("VALUES", cBrand.toString())
 
 
+            if(productID == null){
+                Log.d("db_save", "save")
+                saveNewProduct(cName, cCategory, cBrand, cStock, nAmount)
+            }
+
             productID?.let { it1 -> updateProduct(it1, cName, cCategory, cBrand, cStock, nAmount) }
             //getActivity()?.onBackPressed()
             //dismiss()
@@ -135,8 +113,6 @@ class ManageProductFragment : BottomSheetDialogFragment() {
         val spinnerCategory = binding.spinnerCategory
         val spinnerBrand = binding.spinnerBrand
         val spinnerStock = binding.spinnerStockPosition
-
-
 
         //spinner?.adapter =ArrayAdapter.createFromResource(getActivity(), spinnerList, android.R.layout.simple_spinner_item)
 
@@ -149,24 +125,6 @@ class ManageProductFragment : BottomSheetDialogFragment() {
     }
 
     fun updateProduct(productID: String, cName: String, cCategory: String, cBrand: String, cStockPosition: String, nAmount: Int){
-        /*
-        db.collection("products").document("rYROCQza8NxtWgfpUpc2")
-            .update("cName", cName,
-                "cCategory", "cCategory",
-                "cBrand", "cBrand",
-                "cStockPosition", "cStockPosition",
-                "nAmount", nAmount
-            ).addOnCompleteListener {
-                Log.d("db_update", "Sucesso ao atualizar os dados do produto!")
-
-                Toast.makeText(
-                    activity?.applicationContext!!,
-                    "Sucesso ao atualizar os dados do produto!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-         */
 
         db.collection("products").document(productID)
             .update(mapOf("cName" to cName,
@@ -183,9 +141,33 @@ class ManageProductFragment : BottomSheetDialogFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 dismiss()
-
             }
     }
+
+    fun saveNewProduct(cName: String, cCategory: String, cBrand: String, cStockPosition: String, nAmount: Int){
+
+        val documentPath: String = java.time.Instant.now().toString().replace(":", "").replace(".","").replace("-","")
+        Log.d("db_save", documentPath)
+        db.collection("products").document(documentPath)
+            .set(mapOf("cName" to cName,
+                "cCategory" to cCategory,
+                "cBrand" to cBrand,
+                "cStockPosition" to cStockPosition,
+                "nAmount" to nAmount,
+                "id" to documentPath
+
+            )).addOnCompleteListener {
+                Log.d("db_save", "Sucesso ao criar novo produto!")
+
+                Toast.makeText(
+                    activity?.applicationContext!!,
+                    "Sucesso ao criar novo produto!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                dismiss()
+            }
+    }
+
     fun findProduct(idProduct: String){
         db.collection("products").document(idProduct)
             .addSnapshotListener { documento, error ->
@@ -254,6 +236,9 @@ class ManageProductFragment : BottomSheetDialogFragment() {
                 }
             }
     }
+
+
+
 
     companion object {
         const val PRODUCT_ID = "PRODUCT_ID"

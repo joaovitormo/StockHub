@@ -8,6 +8,13 @@ android:layout_height="wrap_content"
 tools:context=".activity.manageProduct.ManageProductFragment">
 
 
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="teste"
+        />
+
 <TextView
     android:id="@+id/textTitle"
     android:layout_width="match_parent"

@@ -1,9 +1,8 @@
 package com.joaovitormo.stockhub.activity.listProducts
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.*
 import com.joaovitormo.stockhub.activity.manageProduct.ManageProductFragment
@@ -25,27 +24,55 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
         binding = ActivityListProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        customActionBar()
-
         val recyclerViewProducts = binding.recyclerViewProducts
         recyclerViewProducts.layoutManager = LinearLayoutManager(this)
         recyclerViewProducts.setHasFixedSize(true)
         adapterProducts = AdapterProducts(this, listProducts, this)
         recyclerViewProducts.adapter = adapterProducts
         products()
+        customActionBar()
+        initSearchView()
 
 
+        binding.btnNewProduct.setOnClickListener{
+            val dialog = ManageProductFragment()
+            dialog.show(supportFragmentManager, dialog.tag)
+        }
+
+    }
+
+    private fun initSearchView() {
+
+
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(query: String): Boolean {
+                Log.d("SimpleSearchView", "Text changed:$query")
+                binding.textInfo.text = if (adapterProducts.search(query)) {
+                    "Nenhum resultado encontrado."
+                } else {
+                    ""
+                }
+
+                return true
+
+            }
+
+            fun onQueryTextCleared(): Boolean {
+                Log.d("SimpleSearchView", "Text cleared")
+                return true
+            }
+
+
+        })
     }
 
 
 
     private fun products(){
-        db.collection("products").document("teste")
-            .addSnapshotListener { documento, error ->
-                if (documento != null) {
-                    Log.d("db", documento.toString())
-                }
-            }
 
         db.collection("products").orderBy("cName")
             .addSnapshotListener(object  : EventListener<QuerySnapshot>{
@@ -55,16 +82,15 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
                         Log.e("Firestore error", error.message.toString())
                         return
                     }
-
-
-
                     for (dc: DocumentChange in value?.documentChanges!!){
                         if (dc.type == DocumentChange.Type.ADDED){
-                            //Log.e("Firestore", dc.document.id)
+                            //Log.e("SimpleSearchView", dc.document.id)
                             listProducts.add(dc.document.toObject(Product::class.java))
                         }
                     }
                     adapterProducts.notifyDataSetChanged()
+                    adapterProducts.clearSearch()
+                    binding.textInfo.text=""
 
                 }
             })
@@ -127,12 +153,12 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
 
         Log.d("IDPRODUCT", args.toString())
 
-
-
-
         val dialog = ManageProductFragment()
         dialog.show(supportFragmentManager, dialog.tag)
         dialog.setArguments(args)
-        //dialog.onCreate(args)
+        //dialog.cancelDialog()
+        //dialog.setCancelable(false)
     }
 }
+
+
