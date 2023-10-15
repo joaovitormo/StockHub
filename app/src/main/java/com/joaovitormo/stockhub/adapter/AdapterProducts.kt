@@ -19,7 +19,7 @@ class AdapterProducts(private val context: Context, private val listProducts: Mu
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        holder.txtProductName.text = listProducts[position].name
+        holder.txtProductName.text = listProducts[position].cName
 
     }
 

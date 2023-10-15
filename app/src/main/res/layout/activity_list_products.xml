@@ -5,8 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e0dede"
+    android:padding="20dp"
+    android:orientation="vertical"
     tools:context=".activity.listProducts.ListProductsActivity">
 
+    <EditText
+        android:id="@+id/edit_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Buscar"
+        android:layout_marginTop="20dp"
+        android:maxLines="1"
+        android:inputType="text"
+
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"

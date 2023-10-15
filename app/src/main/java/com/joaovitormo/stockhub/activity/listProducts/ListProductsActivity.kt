@@ -2,8 +2,11 @@ package com.joaovitormo.stockhub.activity.listProducts
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.*
+import com.joaovitormo.stockhub.activity.manageProduct.ManageProductFragment
 import com.joaovitormo.stockhub.adapter.AdapterProducts
 import com.joaovitormo.stockhub.databinding.ActivityListProductsBinding
 import com.joaovitormo.stockhub.model.Product
@@ -13,6 +16,9 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
     private lateinit var binding: ActivityListProductsBinding
     private lateinit var adapterProducts: AdapterProducts
     private val listProducts: MutableList<Product> = mutableListOf()
+
+    //db
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +40,39 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
 
 
     private fun products(){
+        db.collection("products").document("teste")
+            .addSnapshotListener { documento, error ->
+                if (documento != null) {
+                    Log.d("db", documento.toString())
+                }
+            }
+
+        db.collection("products").orderBy("cName")
+            .addSnapshotListener(object  : EventListener<QuerySnapshot>{
+                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                    if (error != null)
+                    {
+                        Log.e("Firestore error", error.message.toString())
+                        return
+                    }
+
+
+
+                    for (dc: DocumentChange in value?.documentChanges!!){
+                        if (dc.type == DocumentChange.Type.ADDED){
+                            //Log.e("Firestore", dc.document.id)
+                            listProducts.add(dc.document.toObject(Product::class.java))
+                        }
+                    }
+                    adapterProducts.notifyDataSetChanged()
+
+                }
+            })
+
+
+
+
+        /*
         val product1 = Product("Cimento")
         listProducts.add(product1)
         val product2 = Product("Cimento2")
@@ -58,6 +97,7 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
         listProducts.add(product11)
         val product12 = Product("Cimento12")
         listProducts.add(product12)
+        */
 
     }
 
@@ -71,6 +111,7 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
         actionbar.setDisplayHomeAsUpEnabled(true)
         actionbar.setDisplayHomeAsUpEnabled(true)
 
+
     }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -78,12 +119,20 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
     }
 
     override fun onItemClick(position: Int) {
-        val product = listProducts[position]
+        val product = listProducts[position].id
 
-        Toast.makeText(
-            this,
-            product.name,
-            Toast.LENGTH_SHORT
-        ).show()
+        val args = Bundle()
+        args.putString(ManageProductFragment.PRODUCT_ID, product.toString())
+
+
+        Log.d("IDPRODUCT", args.toString())
+
+
+
+
+        val dialog = ManageProductFragment()
+        dialog.show(supportFragmentManager, dialog.tag)
+        dialog.setArguments(args)
+        //dialog.onCreate(args)
     }
 }

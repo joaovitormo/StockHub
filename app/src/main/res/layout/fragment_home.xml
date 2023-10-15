@@ -69,6 +69,54 @@
                 android:padding="10dp"
                 />
         <Button
+            android:id="@+id/btBrandList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fornecedores"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            />
+        <Button
+            android:id="@+id/btCategoryList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categorias"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            />
+        <Button
+            android:id="@+id/btStockPositionList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Posições de Estoque"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            />
+        <Button
+            android:id="@+id/btReportList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Relatório"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            />
+        <Button
             android:id="@+id/btLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
