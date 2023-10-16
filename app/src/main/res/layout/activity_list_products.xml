@@ -5,12 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e0dede"
+    android:padding="3dp"
+    android:orientation="vertical"
     tools:context=".activity.listProducts.ListProductsActivity">
 
+
+
+
+    <Button
+        android:id="@+id/btnNewProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Adicionar Novo Produto"
+        />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:queryHint="Buscar"
+        android:background="@color/white"
+        app:iconifiedByDefault="false"
+
+        />
+    <TextView
+        android:id="@+id/textInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Carregando..."
+        android:textAlignment="center"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+
 
 </LinearLayout>
