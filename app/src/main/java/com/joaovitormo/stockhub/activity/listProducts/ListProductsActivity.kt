@@ -147,11 +147,14 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
     override fun onItemClick(position: Int) {
         val product = listProducts[position].id
 
+        val product2 = adapterProducts.getItemId(position)
+
         val args = Bundle()
         args.putString(ManageProductFragment.PRODUCT_ID, product.toString())
 
-
-        Log.d("IDPRODUCT", args.toString())
+        Log.d("IDPRODUCT", adapterProducts.getItemId(position).toString())
+        Log.d("IDPRODUCT", position.toString())
+        //Log.d("IDPRODUCT", args.toString())
 
         val dialog = ManageProductFragment()
         dialog.show(supportFragmentManager, dialog.tag)
@@ -159,6 +162,7 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
         //dialog.cancelDialog()
         //dialog.setCancelable(false)
     }
+
 }
 
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e0dede"
-    android:padding="3dp"
+    android:padding="8dp"
     android:orientation="vertical"
     tools:context=".activity.listProducts.ListProductsActivity">
 

@@ -1,12 +1,10 @@
 package com.joaovitormo.stockhub.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.joaovitormo.stockhub.databinding.ProductItemBinding
 import com.joaovitormo.stockhub.model.Product
 
@@ -34,6 +32,12 @@ class AdapterProducts(private val context: Context, private val listProducts: Li
             binding.root.setOnClickListener(this)
         }
 
+
+/*
+        fun getDataAtPosition(position: Int): Product? {
+            return if (productsListToSearch != null && getItemCount() > position) productsListToSearch.get(position) else null
+        }
+ */
         override fun onClick(p0: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {

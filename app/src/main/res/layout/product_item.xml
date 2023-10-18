@@ -3,16 +3,52 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@color/white"
-    android:layout_margin="5dp"
+    android:layout_marginBottom="10dp"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/txtProductName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Produto Teste"
+        android:text="Nome do Produto"
         android:textSize="25sp"
-        android:layout_margin="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
         />
+    <TextView
+        android:id="@+id/txtProductID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID do Produto"
+        android:textSize="18sp"
+        android:layout_marginLeft="10dp"
+        />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_marginBottom="10dp"
+
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/txtAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quantidade: "
+        android:textSize="18sp"
+        android:layout_marginLeft="10dp"
+
+        />
+    <TextView
+        android:id="@+id/txtAmountValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Value nAmount"
+        android:textSize="18sp"
+
+        />
+    </LinearLayout>
+
 
 </LinearLayout>
