@@ -42,11 +42,14 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        /*
         val btLogout: Button = binding.btLogout
         btLogout.setOnClickListener {
             auth.signOut()
             backToLogin()
         }
+        */
+
 
         val btListProducts: Button = binding.btProductList
         btListProducts.setOnClickListener {

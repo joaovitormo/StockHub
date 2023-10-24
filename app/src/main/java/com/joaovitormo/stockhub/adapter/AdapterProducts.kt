@@ -20,13 +20,19 @@ class AdapterProducts(private val context: Context, private val listProducts: Li
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         holder.txtProductName.text = productsListToSearch[position].cName
+        holder.txtProductAmount.text = productsListToSearch[position].nAmount.toString()
+        holder.txtProductID.text = productsListToSearch[position].id
+
 
     }
 
     override fun getItemCount() = productsListToSearch.size
+
     inner class  ProductViewHolder(binding: ProductItemBinding): RecyclerView.ViewHolder(binding.root),
         View.OnClickListener {
         val txtProductName = binding.txtProductName
+        val txtProductAmount = binding.txtAmountValue
+        val txtProductID = binding.txtProductID
 
         init {
             binding.root.setOnClickListener(this)
