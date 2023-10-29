@@ -1,12 +1,15 @@
 package com.joaovitormo.stockhub.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.data.DataHolder
 import com.joaovitormo.stockhub.databinding.ProductItemBinding
 import com.joaovitormo.stockhub.model.Product
+
 
 class AdapterProducts(private val context: Context, private val listProducts: List<Product>, private val listener: RecyclerViewEvent):
     RecyclerView.Adapter<AdapterProducts.ProductViewHolder>() {
@@ -18,12 +21,14 @@ class AdapterProducts(private val context: Context, private val listProducts: Li
         return ProductViewHolder(itemList)
     }
 
+
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         holder.txtProductName.text = productsListToSearch[position].cName
         holder.txtProductAmount.text = productsListToSearch[position].nAmount.toString()
         holder.txtProductID.text = productsListToSearch[position].id
 
 
+        //val item = productsListToSearch.get(holder.absoluteAdapterPosition)
     }
 
     override fun getItemCount() = productsListToSearch.size
@@ -38,24 +43,35 @@ class AdapterProducts(private val context: Context, private val listProducts: Li
             binding.root.setOnClickListener(this)
         }
 
-
-/*
-        fun getDataAtPosition(position: Int): Product? {
-            return if (productsListToSearch != null && getItemCount() > position) productsListToSearch.get(position) else null
-        }
- */
         override fun onClick(p0: View?) {
+            //listener.onItemClick()
+            //Log.d("ITEMCLICK", adapterPosition.toString())
             val position = adapterPosition
+            //val position2 = getBindingAdapterPosition
             if (position != RecyclerView.NO_POSITION) {
+
                 listener.onItemClick(position)
             }
         }
+
 
     }
 
     interface RecyclerViewEvent{
         fun onItemClick(position: Int)
     }
+
+    fun setDataChanged(query: String): MutableList<Product> {
+
+        productsListToSearch.clear()
+
+        productsListToSearch.addAll(listProducts.filter { it.cName.contains(query,true) })
+
+        notifyDataSetChanged()
+
+        return productsListToSearch
+    }
+
 
     fun search(query: String): Boolean {
 
@@ -67,6 +83,7 @@ class AdapterProducts(private val context: Context, private val listProducts: Li
 
         return productsListToSearch.isEmpty()
     }
+
 
     fun clearSearch(){
         productsListToSearch = listProducts.toMutableList()
