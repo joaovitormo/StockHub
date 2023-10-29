@@ -31,7 +31,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ManageProductFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ManageProductFragment : BottomSheetDialogFragment() {
+class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheetDialogFragment() {
+
+    private var mManageProductFragment : ManageProductDialogListener?=null
+    init {
+        this.mManageProductFragment = listener
+    }
 
 
     private lateinit var binding: FragmentManageProductBinding
@@ -108,6 +113,9 @@ class ManageProductFragment : BottomSheetDialogFragment() {
             productID?.let { it1 -> updateProduct(it1, cName, cCategory, cBrand, cStock, nAmount) }
             //getActivity()?.onBackPressed()
             //dismiss()
+
+            mManageProductFragment?.editProduct()
+
         }
 
         val spinnerCategory = binding.spinnerCategory
@@ -141,6 +149,7 @@ class ManageProductFragment : BottomSheetDialogFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 dismiss()
+
             }
     }
 
@@ -251,7 +260,7 @@ class ManageProductFragment : BottomSheetDialogFragment() {
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
          * @return A new instance of fragment ManageProductFragment.
-         */
+
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
@@ -261,6 +270,11 @@ class ManageProductFragment : BottomSheetDialogFragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+         */
+    }
+
+    interface ManageProductDialogListener {
+        fun editProduct()
     }
 
 }

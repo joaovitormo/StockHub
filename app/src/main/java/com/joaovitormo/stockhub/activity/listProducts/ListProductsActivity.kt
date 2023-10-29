@@ -1,7 +1,9 @@
 package com.joaovitormo.stockhub.activity.listProducts
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.*
@@ -10,18 +12,21 @@ import com.joaovitormo.stockhub.adapter.AdapterProducts
 import com.joaovitormo.stockhub.databinding.ActivityListProductsBinding
 import com.joaovitormo.stockhub.model.Product
 
-class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEvent {
+class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEvent, ManageProductFragment.ManageProductDialogListener {
 
     private lateinit var binding: ActivityListProductsBinding
     private lateinit var adapterProducts: AdapterProducts
     private var listProducts: MutableList<Product> = mutableListOf()
     private var productsListToSearch: MutableList<Product> = mutableListOf()
+    lateinit var listener: ManageProductFragment.ManageProductDialogListener
 
     //db
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        listener = this
+
         binding = ActivityListProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -37,7 +42,7 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
 
 
         binding.btnNewProduct.setOnClickListener{
-            val dialog = ManageProductFragment()
+            val dialog = ManageProductFragment(listener)
             dialog.show(supportFragmentManager, dialog.tag)
         }
 
@@ -120,17 +125,26 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
 
         adapterProducts.notifyDataSetChanged()
 
-        Log.d("ITEMCLICK", adapterProducts.getItemId(position).toString())
-        Log.d("ITEMCLICK", position.toString())
         //Log.d("IDPRODUCT", args.toString())
 
-        val dialog = ManageProductFragment()
+        val dialog = ManageProductFragment(listener)
         dialog.show(supportFragmentManager, dialog.tag)
         dialog.setArguments(args)
         //dialog.cancelDialog()
         //dialog.setCancelable(false)
     }
 
+    override fun editProduct() {
+        adapterProducts.notifyDataSetChanged()
+        val intent = Intent(this, ListProductsActivity::class.java)
+        startActivity(intent)
+        this.finish()
+    }
+
 }
+
+
+
+
 
 
