@@ -22,8 +22,6 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
-
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -42,15 +40,6 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        /*
-        val btLogout: Button = binding.btLogout
-        btLogout.setOnClickListener {
-            auth.signOut()
-            backToLogin()
-        }
-        */
-
-
         val btListProducts: Button = binding.btProductList
         btListProducts.setOnClickListener {
             listProducts()
@@ -64,18 +53,9 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    fun backToLogin() {
-
-        val intent = Intent(activity, LoginActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish()
-    }
-
     fun listProducts() {
         val intent = Intent(activity, ListProductsActivity::class.java)
         startActivity(intent)
     }
-
-
 
 }

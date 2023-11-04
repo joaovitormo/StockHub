@@ -1,24 +1,19 @@
 package com.joaovitormo.stockhub.activity.manageProduct
 
-import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.firestore.*
-import com.joaovitormo.stockhub.R
-import com.joaovitormo.stockhub.activity.homePage.HomePageActivity
-import com.joaovitormo.stockhub.activity.listProducts.ListProductsActivity
-import com.joaovitormo.stockhub.activity.login.LoginActivity
 import com.joaovitormo.stockhub.databinding.FragmentManageProductBinding
-import com.joaovitormo.stockhub.model.Product
-import kotlinx.coroutines.NonDisposableHandle.parent
+import java.util.Collections
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,27 +38,16 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
 
     private val db = FirebaseFirestore.getInstance()
 
-    val spinnerListCategoryItens: List<String> = listOf(
-        "Madeira", "Tintas", "Cimento", "Ferragens",
-        "Telhas","Ferramentas Elétricas","Encanamento",
-        "Iluminação", "Revestimentos","Isolamento",
-        "Vidros","Isolamento Térmico","Máquinas de Construção",
-        "Sistemas de Segurança", "Portas e Janelas"
+    var spinnerListCategoryItens: MutableList<String> = mutableListOf()
+
+    var spinnerListBrandItens: List<String> = listOf(
+        "Eucatex"
     )
 
-    val spinnerListBrandItens: List<String> = listOf(
-        "Eucatex", "Duratex", "Sherwin-Williams", "Behr",
-        "Cimpor", "Votorantim","Tramontina", "Stanley",
-        "Eternit", "Brasilit","Bosch", "Makita",
-        "Tigre", "Amanco","Philips", "Osram",
-        "Portobello", "Eliane","Isover", "Rockwool",
-        "Saint-Gobain", "Cebrace","Caterpillar", "Bobcat",
-        "Hikvision", "Honeywell","Pado", "Sasazaki"
-    )
+    val spinnerListStockPositionItens: MutableList<String> = mutableListOf()
 
-    val spinnerListStockPositionItens: List<String> = listOf(
-        "A001", "A002", "A003", "A004", "A005"
-    )
+    var subjects: MutableList<String> = ArrayList()
+
 
 
     // TODO: Rename and change types of parameters
@@ -92,6 +76,10 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
         binding = FragmentManageProductBinding.inflate(inflater,container,false)
         //return inflater.inflate(R.layout.fragment_manage_product, container, false)
 
+        getBrands()
+
+
+
         binding.saveButton.setOnClickListener {
             val cName = binding.name.text.toString()
             val cCategory = binding.spinnerCategory.selectedItem.toString()
@@ -118,13 +106,23 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
 
         }
 
-        val spinnerCategory = binding.spinnerCategory
+        val spinnerCategory: Spinner = binding.spinnerCategory
         val spinnerBrand = binding.spinnerBrand
         val spinnerStock = binding.spinnerStockPosition
 
         //spinner?.adapter =ArrayAdapter.createFromResource(getActivity(), spinnerList, android.R.layout.simple_spinner_item)
 
-        spinnerCategory?.adapter = ArrayAdapter(activity?.applicationContext!!, android.R.layout.simple_spinner_dropdown_item, spinnerListCategoryItens)
+        getBrands()
+
+
+        val adapterTest: ArrayAdapter<String> = ArrayAdapter<String>(
+            activity?.applicationContext!!,
+            android.R.layout.simple_spinner_dropdown_item,
+            subjects
+        )
+        spinnerCategory.setAdapter(adapterTest)
+
+        //spinnerCategory?.adapter = ArrayAdapter(activity?.applicationContext!!, android.R.layout.simple_spinner_dropdown_item, getBrands2())
         spinnerBrand?.adapter = ArrayAdapter(activity?.applicationContext!!, android.R.layout.simple_spinner_dropdown_item, spinnerListBrandItens)
         spinnerStock?.adapter = ArrayAdapter(activity?.applicationContext!!, android.R.layout.simple_spinner_dropdown_item, spinnerListStockPositionItens)
 
@@ -244,6 +242,56 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
 
                 }
             }
+    }
+
+    private fun getBrands() {
+        db.collection("brands").orderBy("cName")
+            .addSnapshotListener(object  : EventListener<QuerySnapshot>{
+                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                    if (error != null)
+                    {
+                        Log.e("Firestore error", error.message.toString())
+                        return
+                    }
+                    for (dc: DocumentChange in value?.documentChanges!!){
+                        if (dc.type == DocumentChange.Type.ADDED){
+                            Log.e("brands", dc.document.id)
+                            //spinnerListBrandItens.add(dc.document.toObject(Product::class.java))
+                            //spinnerListBrandItens = listOf("teste")
+                            subjects.add("teste")
+                            Log.e("brandsSubjects", subjects.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun getBrands2(): List<String> {
+        db.collection("brands").orderBy("cName")
+            .addSnapshotListener(object  : EventListener<QuerySnapshot>{
+                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                    if (error != null)
+                    {
+                        Log.e("Firestore error", error.message.toString())
+                        return
+                    }
+                    for (dc: DocumentChange in value?.documentChanges!!){
+                        if (dc.type == DocumentChange.Type.ADDED){
+                            //Log.e("brands", dc.document.id)
+                            //spinnerListBrandItens.add(dc.document.toObject(Product::class.java))
+                            //spinnerListBrandItens.
+                            spinnerListBrandItens.plus("teste1")
+                            spinnerListCategoryItens.add("testeMutable")
+                            //spinnerListCategoryItens.add("teste")
+                        }
+                    }
+                }
+            })
+        //Log.e("brands", spinnerListBrandItens.toString())
+        //Log.e("brands", spinnerListCategoryItens.toString())
+
+
+        return spinnerListBrandItens
     }
 
 
