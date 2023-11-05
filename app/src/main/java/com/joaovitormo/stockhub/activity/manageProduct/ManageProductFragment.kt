@@ -1,5 +1,6 @@
 package com.joaovitormo.stockhub.activity.manageProduct
 
+import android.R
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +13,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.firestore.*
 import com.joaovitormo.stockhub.databinding.FragmentManageProductBinding
-import java.util.Collections
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,15 +38,11 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
 
     private val db = FirebaseFirestore.getInstance()
 
-    var spinnerListCategoryItens: MutableList<String> = mutableListOf()
+    var spinnerListCategoryItens: MutableList<String> = ArrayList()
 
-    var spinnerListBrandItens: List<String> = listOf(
-        "Eucatex"
-    )
+    val spinnerListStockPositionItens: MutableList<String> = ArrayList()
 
-    val spinnerListStockPositionItens: MutableList<String> = mutableListOf()
-
-    var subjects: MutableList<String> = ArrayList()
+    var spinnerListBrandItens: MutableList<String> = ArrayList()
 
 
 
@@ -65,7 +61,8 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
 
         Log.d("IDPRODUCT", productID.toString())
 
-        productID?.let { findProduct(it) }
+
+        //productID?.let { findProduct(it) }
     }
 
     override fun onCreateView(
@@ -77,6 +74,9 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
         //return inflater.inflate(R.layout.fragment_manage_product, container, false)
 
         getBrands()
+        getCategories()
+        getStockPositions()
+        productID?.let { findProduct(it) }
 
 
 
@@ -106,25 +106,29 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
 
         }
 
-        val spinnerCategory: Spinner = binding.spinnerCategory
-        val spinnerBrand = binding.spinnerBrand
-        val spinnerStock = binding.spinnerStockPosition
-
-        //spinner?.adapter =ArrayAdapter.createFromResource(getActivity(), spinnerList, android.R.layout.simple_spinner_item)
-
-        getBrands()
+        val spinnerBrand: Spinner = binding.spinnerBrand
 
 
-        val adapterTest: ArrayAdapter<String> = ArrayAdapter<String>(
+        /*val adapterBrand: ArrayAdapter<String> = ArrayAdapter<String>(
             activity?.applicationContext!!,
             android.R.layout.simple_spinner_dropdown_item,
-            subjects
+            spinnerListBrandItens
         )
-        spinnerCategory.setAdapter(adapterTest)
+        spinnerBrand.setAdapter(adapterBrand)
+        //adapterBrand.add("TESTE ")
+        adapterBrand.toString()*/
+
+        val spinnerCategory: Spinner = binding.spinnerCategory
+
+
+        val spinnerStock: Spinner = binding.spinnerStockPosition
+
+
+
 
         //spinnerCategory?.adapter = ArrayAdapter(activity?.applicationContext!!, android.R.layout.simple_spinner_dropdown_item, getBrands2())
-        spinnerBrand?.adapter = ArrayAdapter(activity?.applicationContext!!, android.R.layout.simple_spinner_dropdown_item, spinnerListBrandItens)
-        spinnerStock?.adapter = ArrayAdapter(activity?.applicationContext!!, android.R.layout.simple_spinner_dropdown_item, spinnerListStockPositionItens)
+        //spinnerBrand?.adapter = ArrayAdapter(activity?.applicationContext!!, android.R.layout.simple_spinner_dropdown_item, spinnerListBrandItens)
+        //spinnerStock?.adapter = ArrayAdapter(activity?.applicationContext!!, android.R.layout.simple_spinner_dropdown_item, spinnerListStockPositionItens)
 
 
         return binding.root
@@ -245,6 +249,16 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
     }
 
     private fun getBrands() {
+        val spinnerBrand: Spinner = binding.spinnerBrand
+
+        val adapterBrand: ArrayAdapter<String> = ArrayAdapter<String>(
+            activity?.applicationContext!!,
+            android.R.layout.simple_spinner_dropdown_item,
+            spinnerListBrandItens
+        )
+        spinnerBrand.setAdapter(adapterBrand)
+
+        adapterBrand.toString()
         db.collection("brands").orderBy("cName")
             .addSnapshotListener(object  : EventListener<QuerySnapshot>{
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
@@ -256,18 +270,26 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
                     for (dc: DocumentChange in value?.documentChanges!!){
                         if (dc.type == DocumentChange.Type.ADDED){
                             Log.e("brands", dc.document.id)
-                            //spinnerListBrandItens.add(dc.document.toObject(Product::class.java))
-                            //spinnerListBrandItens = listOf("teste")
-                            subjects.add("teste")
-                            Log.e("brandsSubjects", subjects.toString())
+                            //adapterBrand.add("TESTE ")
+                            spinnerListBrandItens.add(dc.document.getString("cName").toString())
+                            adapterBrand.notifyDataSetChanged()
+                            Log.e("brandsSubjects", spinnerListBrandItens.toString())
                         }
                     }
                 }
             })
     }
 
-    private fun getBrands2(): List<String> {
-        db.collection("brands").orderBy("cName")
+    private fun getCategories() {
+        val spinnerCategory: Spinner = binding.spinnerCategory
+
+        val adapterCategory: ArrayAdapter<String> = ArrayAdapter<String>(
+            activity?.applicationContext!!,
+            android.R.layout.simple_spinner_dropdown_item,
+            spinnerListCategoryItens
+        )
+        spinnerCategory.setAdapter(adapterCategory)
+        db.collection("categories").orderBy("cName")
             .addSnapshotListener(object  : EventListener<QuerySnapshot>{
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                     if (error != null)
@@ -277,24 +299,42 @@ class ManageProductFragment(listener: ManageProductDialogListener) : BottomSheet
                     }
                     for (dc: DocumentChange in value?.documentChanges!!){
                         if (dc.type == DocumentChange.Type.ADDED){
-                            //Log.e("brands", dc.document.id)
-                            //spinnerListBrandItens.add(dc.document.toObject(Product::class.java))
-                            //spinnerListBrandItens.
-                            spinnerListBrandItens.plus("teste1")
-                            spinnerListCategoryItens.add("testeMutable")
-                            //spinnerListCategoryItens.add("teste")
+                            Log.e("categories", dc.document.id)
+                            spinnerListCategoryItens.add(dc.document.getString("cName").toString())
+                            adapterCategory.notifyDataSetChanged()
                         }
                     }
                 }
             })
-        //Log.e("brands", spinnerListBrandItens.toString())
-        //Log.e("brands", spinnerListCategoryItens.toString())
-
-
-        return spinnerListBrandItens
     }
+    private fun getStockPositions() {
+        val spinnerStock: Spinner = binding.spinnerStockPosition
 
+        val adapterStock: ArrayAdapter<String> = ArrayAdapter<String>(
+            activity?.applicationContext!!,
+            android.R.layout.simple_spinner_dropdown_item,
+            spinnerListStockPositionItens
+        )
+        spinnerStock.setAdapter(adapterStock)
 
+        db.collection("stockPositions").orderBy("cName")
+            .addSnapshotListener(object  : EventListener<QuerySnapshot>{
+                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+                    if (error != null)
+                    {
+                        Log.e("Firestore error", error.message.toString())
+                        return
+                    }
+                    for (dc: DocumentChange in value?.documentChanges!!){
+                        if (dc.type == DocumentChange.Type.ADDED){
+                            Log.e("stockPositions", dc.document.id)
+                            spinnerListStockPositionItens.add(dc.document.getString("cName").toString())
+                            adapterStock.notifyDataSetChanged()
+                        }
+                    }
+                }
+            })
+    }
 
 
     companion object {
