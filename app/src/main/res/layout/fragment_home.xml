@@ -84,9 +84,10 @@
             below are the two widgets imageview and text view we are displaying inside our card view.
             -->
             <TextView
+                android:id="@+id/txtSumProducts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="256"
+                android:text="0"
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:textSize="44sp"
@@ -130,9 +131,10 @@
             below are the two widgets imageview and text view we are displaying inside our card view.
             -->
             <TextView
+                android:id="@+id/txtCountProducts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="34"
+                android:text="0"
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:textSize="44sp"

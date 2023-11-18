@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.*
+import com.joaovitormo.stockhub.activity.homePage.HomePageActivity
 import com.joaovitormo.stockhub.activity.manageProduct.ManageProductFragment
 import com.joaovitormo.stockhub.adapter.AdapterProducts
 import com.joaovitormo.stockhub.databinding.ActivityListProductsBinding
@@ -113,6 +114,9 @@ class ListProductsActivity : AppCompatActivity(), AdapterProducts.RecyclerViewEv
 
     }
     override fun onSupportNavigateUp(): Boolean {
+        val intent = Intent(this, HomePageActivity::class.java)
+        startActivity(intent)
+        this.finish()
         onBackPressed()
         return true
     }
