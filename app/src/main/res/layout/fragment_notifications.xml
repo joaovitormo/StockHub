@@ -4,7 +4,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".activity.homePage.HomePageActivity">
+tools:context=".activity.homePage.ui.notifications.NotificationsFragment">
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,6 +16,14 @@ tools:context=".activity.homePage.HomePageActivity">
     android:background="#e0dede"
     android:orientation="vertical"
     >
+    <TextView
+        android:id="@+id/txtHelloName"
+        android:layout_margin="20dp"
+        android:textSize="24sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Olá, "
+        />
 
     <Button
         android:id="@+id/btLogout"

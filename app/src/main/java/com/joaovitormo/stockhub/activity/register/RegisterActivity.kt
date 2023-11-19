@@ -8,12 +8,14 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.firestore.FirebaseFirestore
 import com.joaovitormo.stockhub.R
 import com.joaovitormo.stockhub.activity.login.LoginActivity
 import com.joaovitormo.stockhub.databinding.ActivityRegisterBinding
@@ -21,6 +23,7 @@ import com.joaovitormo.stockhub.databinding.ActivityRegisterBinding
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,7 @@ class RegisterActivity : AppCompatActivity() {
 
             val email = binding.editEmail.text.toString()
             val senha = binding.editSenha.text.toString()
+            val nome = binding.editName.text.toString()
 
             if(email.isEmpty() || senha.isEmpty()){
                 val snackbar = Snackbar.make(it, "Preencha todos os campos!", Snackbar.LENGTH_SHORT)
@@ -50,6 +54,7 @@ class RegisterActivity : AppCompatActivity() {
                         val snackbar = Snackbar.make(it, "Sucesso ao cadastrar usuário!", Snackbar.LENGTH_SHORT)
                         //snackbar.setBackgroundTint(Color.GREEN)
                         snackbar.show()
+                        saveUser(nome, email)
                         binding.editEmail.setText("")
                         binding.editSenha.setText("")
 
@@ -82,6 +87,20 @@ class RegisterActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
-        }, 3000)
+        }, 2000)
+
+
+    }
+    fun saveUser(cName: String, cEmail: String) {
+        val documentPath: String = java.time.Instant.now().toString().replace(":", "").replace(".","").replace("-","")
+        Log.d("db_save", documentPath)
+        db.collection("users").document(documentPath)
+            .set(mapOf("cName" to cName,
+                "cEmail" to cEmail,
+                "id" to documentPath
+
+            )).addOnCompleteListener {
+                Log.d("db_save", "Sucesso ao criar novo usuário!")
+            }
     }
 }
