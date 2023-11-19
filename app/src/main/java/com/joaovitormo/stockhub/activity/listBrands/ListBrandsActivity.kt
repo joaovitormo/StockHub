@@ -6,21 +6,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.*
-import com.joaovitormo.stockhub.R
 import com.joaovitormo.stockhub.activity.homePage.HomePageActivity
-import com.joaovitormo.stockhub.activity.listProducts.ListProductsActivity
 import com.joaovitormo.stockhub.activity.manageBrand.ManageBrandFragment
-import com.joaovitormo.stockhub.activity.manageProduct.ManageProductFragment
-import com.joaovitormo.stockhub.adapter.AdapterBrands
-import com.joaovitormo.stockhub.adapter.AdapterProducts
+import com.joaovitormo.stockhub.adapter.AdapterItems
 import com.joaovitormo.stockhub.databinding.ActivityListBrandsBinding
-import com.joaovitormo.stockhub.databinding.ActivityListProductsBinding
 import com.joaovitormo.stockhub.model.Brand
-import com.joaovitormo.stockhub.model.Product
 
-class ListBrandsActivity : AppCompatActivity(), AdapterBrands.RecyclerViewEvent, ManageBrandFragment.ManageBrandDialogListener  {
+class ListBrandsActivity : AppCompatActivity(), AdapterItems.RecyclerViewEvent, ManageBrandFragment.ManageBrandDialogListener  {
     private lateinit var binding: ActivityListBrandsBinding
-    private lateinit var adapterBrands: AdapterBrands
+    private lateinit var adapterItems: AdapterItems
     private var listItems: MutableList<Brand> = mutableListOf()
     lateinit var listener: ManageBrandFragment.ManageBrandDialogListener
 
@@ -38,8 +32,8 @@ class ListBrandsActivity : AppCompatActivity(), AdapterBrands.RecyclerViewEvent,
         val recyclerViewBrands = binding.recyclerViewBrands
         recyclerViewBrands.layoutManager = LinearLayoutManager(this)
         recyclerViewBrands.setHasFixedSize(true)
-        adapterBrands = AdapterBrands(this, listItems, this)
-        recyclerViewBrands.adapter = adapterBrands
+        adapterItems = AdapterItems(this, listItems, this)
+        recyclerViewBrands.adapter = adapterItems
         Items()
         customActionBar()
 
@@ -62,11 +56,11 @@ class ListBrandsActivity : AppCompatActivity(), AdapterBrands.RecyclerViewEvent,
 
             override fun onQueryTextChange(query: String): Boolean {
                 Log.d("SimpleSearchView", "Text changed:$query")
-                if (adapterBrands.search(query)) {
+                if (adapterItems.search(query)) {
                     binding.textInfo.text= "Nenhum resultado encontrado."
                 } else {
                     binding.textInfo.text =""
-                    listItems = adapterBrands.setDataChanged(query)
+                    listItems = adapterItems.setDataChanged(query)
                 }
                 return true
 
@@ -97,8 +91,8 @@ class ListBrandsActivity : AppCompatActivity(), AdapterBrands.RecyclerViewEvent,
                             listItems.add(dc.document.toObject(Brand::class.java))
                         }
                     }
-                    adapterBrands.notifyDataSetChanged()
-                    adapterBrands.clearSearch()
+                    adapterItems.notifyDataSetChanged()
+                    adapterItems.clearSearch()
                     binding.textInfo.text=""
 
                 }
@@ -131,7 +125,7 @@ class ListBrandsActivity : AppCompatActivity(), AdapterBrands.RecyclerViewEvent,
         val args = Bundle()
         args.putString(ManageBrandFragment.ITEM_ID, product.toString())
 
-        adapterBrands.notifyDataSetChanged()
+        adapterItems.notifyDataSetChanged()
 
         //Log.d("IDPRODUCT", args.toString())
 
@@ -143,7 +137,7 @@ class ListBrandsActivity : AppCompatActivity(), AdapterBrands.RecyclerViewEvent,
     }
 
     override fun editBrand() {
-        adapterBrands.notifyDataSetChanged()
+        adapterItems.notifyDataSetChanged()
         val intent = Intent(this, ListBrandsActivity::class.java)
         startActivity(intent)
         this.finish()

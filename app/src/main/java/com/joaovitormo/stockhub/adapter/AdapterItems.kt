@@ -9,9 +9,9 @@ import com.joaovitormo.stockhub.databinding.ListItemBinding
 import com.joaovitormo.stockhub.model.Brand
 
 
-class AdapterBrands(private val context: Context, private val listBrands: List<Brand>, private val listener: AdapterBrands.RecyclerViewEvent):
-    RecyclerView.Adapter<AdapterBrands.ItemViewHolder>() {
-    private var brandsListToSearch = listBrands.toMutableList()
+class AdapterItems(private val context: Context, private val listItems: List<Brand>, private val listener: AdapterItems.RecyclerViewEvent):
+    RecyclerView.Adapter<AdapterItems.ItemViewHolder>() {
+    private var itemsListToSearch = listItems.toMutableList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         //val itemList = ListItemBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -21,14 +21,14 @@ class AdapterBrands(private val context: Context, private val listBrands: List<B
 
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.txtItemName.text = brandsListToSearch[position].cName
-        holder.txtItemID.text = brandsListToSearch[position].id
+        holder.txtItemName.text = itemsListToSearch[position].cName
+        holder.txtItemID.text = itemsListToSearch[position].id
 
 
         //val item = productsListToSearch.get(holder.absoluteAdapterPosition)
     }
 
-    override fun getItemCount() = brandsListToSearch.size
+    override fun getItemCount() = itemsListToSearch.size
 
     inner class  ItemViewHolder(binding: ListItemBinding): RecyclerView.ViewHolder(binding.root),
         View.OnClickListener {
@@ -56,30 +56,30 @@ class AdapterBrands(private val context: Context, private val listBrands: List<B
 
     fun setDataChanged(query: String): MutableList<Brand> {
 
-        brandsListToSearch.clear()
+        itemsListToSearch.clear()
 
-        brandsListToSearch.addAll(listBrands.filter { it.cName.contains(query,true) })
+        itemsListToSearch.addAll(listItems.filter { it.cName.contains(query,true) })
 
         notifyDataSetChanged()
 
-        return brandsListToSearch
+        return itemsListToSearch
     }
 
 
     fun search(query: String): Boolean {
 
-        brandsListToSearch.clear()
+        itemsListToSearch.clear()
 
-        brandsListToSearch.addAll(listBrands.filter { it.cName.contains(query,true) })
+        itemsListToSearch.addAll(listItems.filter { it.cName.contains(query,true) })
 
         notifyDataSetChanged()
 
-        return brandsListToSearch.isEmpty()
+        return itemsListToSearch.isEmpty()
     }
 
 
     fun clearSearch(){
-        brandsListToSearch = listBrands.toMutableList()
+        itemsListToSearch = listItems.toMutableList()
         notifyDataSetChanged()
     }
 }
