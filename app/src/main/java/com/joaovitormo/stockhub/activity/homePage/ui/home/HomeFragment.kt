@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.joaovitormo.stockhub.activity.listBrands.ListBrandsActivity
 import com.joaovitormo.stockhub.activity.listProducts.ListProductsActivity
 import com.joaovitormo.stockhub.databinding.FragmentHomeBinding
 
@@ -50,6 +51,11 @@ class HomeFragment : Fragment() {
         btListProducts.setOnClickListener {
             listProducts()
         }
+
+        val btListBrands: Button = binding.btBrandList
+        btListBrands.setOnClickListener {
+            listBrands()
+        }
         return root
 
     }
@@ -61,6 +67,11 @@ class HomeFragment : Fragment() {
 
     fun listProducts() {
         val intent = Intent(activity, ListProductsActivity::class.java)
+        startActivity(intent)
+        activity?.finish()
+    }
+    fun listBrands() {
+        val intent = Intent(activity, ListBrandsActivity::class.java)
         startActivity(intent)
         activity?.finish()
     }
