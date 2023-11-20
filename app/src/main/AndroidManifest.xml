@@ -15,8 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StockHub"
         tools:targetApi="31">
+
         <activity
-            android:name=".ListCategoriesActivity"
+            android:name=".activity.listCategories.ListCategoriesActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
