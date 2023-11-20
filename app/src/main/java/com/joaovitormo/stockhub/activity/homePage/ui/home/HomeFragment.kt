@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.joaovitormo.stockhub.activity.listBrands.ListBrandsActivity
 import com.joaovitormo.stockhub.activity.listCategories.ListCategoriesActivity
+import com.joaovitormo.stockhub.activity.listStockPositions.ListStockPositionsActivity
 import com.joaovitormo.stockhub.activity.listProducts.ListProductsActivity
 import com.joaovitormo.stockhub.databinding.FragmentHomeBinding
 
@@ -69,6 +70,7 @@ class HomeFragment : Fragment() {
 
         return root
 
+
     }
 
     override fun onDestroyView() {
@@ -93,7 +95,7 @@ class HomeFragment : Fragment() {
     }
 
     fun listStockPositions() {
-        val intent = Intent(activity, ListCategoriesActivity::class.java)
+        val intent = Intent(activity, ListStockPositionsActivity::class.java)
         startActivity(intent)
         activity?.finish()
     }

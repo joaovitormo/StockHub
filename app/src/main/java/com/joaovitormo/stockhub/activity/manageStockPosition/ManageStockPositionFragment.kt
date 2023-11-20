@@ -1,4 +1,5 @@
-package com.joaovitormo.stockhub.activity.manageCategory
+package com.joaovitormo.stockhub.activity.manageStockPosition
+
 
 import android.R
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.joaovitormo.stockhub.activity.manageProduct.ManageProductFragment
 import com.joaovitormo.stockhub.databinding.FragmentManageBrandBinding
 import com.joaovitormo.stockhub.databinding.FragmentManageCategoryBinding
 import com.joaovitormo.stockhub.databinding.FragmentManageProductBinding
+import com.joaovitormo.stockhub.databinding.FragmentManageStockpositionBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,15 +32,15 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ManageProductFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ManageCategoryFragment(listener: ManageCategoryDialogListener) : BottomSheetDialogFragment() {
+class ManageStockPositionFragment(listener: ManageStockPositionDialogListener) : BottomSheetDialogFragment() {
 
-    private var mManageCategoryFragment : ManageCategoryDialogListener?=null
+    private var mManageStockPositionFragment : ManageStockPositionDialogListener?=null
     init {
-        this.mManageCategoryFragment = listener
+        this.mManageStockPositionFragment = listener
     }
 
 
-    private lateinit var binding: FragmentManageCategoryBinding
+    private lateinit var binding: FragmentManageStockpositionBinding
 
     private val db = FirebaseFirestore.getInstance()
 
@@ -66,7 +68,7 @@ class ManageCategoryFragment(listener: ManageCategoryDialogListener) : BottomShe
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentManageCategoryBinding.inflate(inflater,container,false)
+        binding = FragmentManageStockpositionBinding.inflate(inflater,container,false)
         //return inflater.inflate(R.layout.fragment_manage_product, container, false)
 
         binding.deleteButton.setVisibility(View.INVISIBLE)
@@ -87,7 +89,7 @@ class ManageCategoryFragment(listener: ManageCategoryDialogListener) : BottomShe
             itemID?.let { it1 -> updateProduct(it1, cName) }
 
 
-            mManageCategoryFragment?.editItem()
+            mManageStockPositionFragment?.editItem()
 
         }
 
@@ -95,7 +97,7 @@ class ManageCategoryFragment(listener: ManageCategoryDialogListener) : BottomShe
 
             itemID?.let { it1 -> deleteItem(it1) }
 
-            mManageCategoryFragment?.editItem()
+            mManageStockPositionFragment?.editItem()
 
         }
         return binding.root
@@ -103,10 +105,10 @@ class ManageCategoryFragment(listener: ManageCategoryDialogListener) : BottomShe
 
     fun updateProduct(productID: String, cName: String){
 
-        db.collection("categories").document(productID)
+        db.collection("stockPositions").document(productID)
             .update(mapOf("cName" to cName
             )).addOnCompleteListener {
-                Log.d("db_update", "Sucesso ao atualizar os dados do produto!")
+                Log.d("db_update", "Sucesso ao atualizar os dados!")
 
 //                Toast.makeText(
 //                    activity?.applicationContext!!,
@@ -122,27 +124,27 @@ class ManageCategoryFragment(listener: ManageCategoryDialogListener) : BottomShe
 
         val documentPath: String = java.time.Instant.now().toString().replace(":", "").replace(".","").replace("-","")
         Log.d("db_save", documentPath)
-        db.collection("categories").document(documentPath)
+        db.collection("stockPositions").document(documentPath)
             .set(mapOf("cName" to cName,
                 "id" to documentPath
 
             )).addOnCompleteListener {
-                Log.d("db_save", "Sucesso ao criar nova categoria!")
+                Log.d("db_save", "Sucesso ao criar novo Item!")
                 Toast.makeText(
                     activity?.applicationContext!!,
-                    "Sucesso ao criar nova categoria!",
+                    "Sucesso ao criar nova posição de estoque!",
                     Toast.LENGTH_SHORT
                 ).show()
                 dismiss()
             }
     }
     fun deleteItem(productID: String){
-        db.collection("categories").document(productID)
+        db.collection("stockPositions").document(productID)
             .delete().addOnCompleteListener {
-                Log.d("db_delete", "Sucesso ao deletar os dados da categoria!")
+                Log.d("db_delete", "Sucesso ao deletar os dados!")
                 Toast.makeText(
                     activity?.applicationContext!!,
-                    "Sucesso ao deletar categoria!",
+                    "Sucesso ao deletar posição de estoque!",
                     Toast.LENGTH_SHORT
                 ).show()
                 dismiss()
@@ -151,7 +153,7 @@ class ManageCategoryFragment(listener: ManageCategoryDialogListener) : BottomShe
 
     fun findProduct(idProduct: String){
         binding.deleteButton.setVisibility(View.VISIBLE)
-        db.collection("categories").document(idProduct)
+        db.collection("stockPositions").document(idProduct)
             .addSnapshotListener { documento, error ->
                 if (documento != null) {
                     binding.name.setText(documento.getString("cName"))
@@ -185,7 +187,7 @@ class ManageCategoryFragment(listener: ManageCategoryDialogListener) : BottomShe
          */
     }
 
-    interface ManageCategoryDialogListener {
+    interface ManageStockPositionDialogListener {
         fun editItem()
     }
 

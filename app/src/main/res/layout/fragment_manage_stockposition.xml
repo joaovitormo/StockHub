@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".activity.manageCategory.ManageCategoryFragment">
+    tools:context=".activity.manageStockPosition.ManageStockPositionFragment">
 
 
 
@@ -13,7 +13,7 @@
         android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Categoria"
+        android:text="Posição de Estoque"
         android:textSize="30sp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"

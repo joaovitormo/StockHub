@@ -1,5 +1,4 @@
-package com.joaovitormo.stockhub.activity.listCategories
-
+package com.joaovitormo.stockhub.activity.listStockPositions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,17 +9,19 @@ import com.joaovitormo.stockhub.R
 import com.joaovitormo.stockhub.activity.homePage.HomePageActivity
 import com.joaovitormo.stockhub.activity.listBrands.ListBrandsActivity
 import com.joaovitormo.stockhub.activity.manageBrand.ManageBrandFragment
-import com.joaovitormo.stockhub.activity.manageCategory.ManageCategoryFragment
+import com.joaovitormo.stockhub.activity.manageStockPosition.ManageStockPositionFragment
 import com.joaovitormo.stockhub.adapter.AdapterItems
 import com.joaovitormo.stockhub.databinding.ActivityListBrandsBinding
 import com.joaovitormo.stockhub.databinding.ActivityListCategoriesBinding
+import com.joaovitormo.stockhub.databinding.ActivityListStockPositionsBinding
 import com.joaovitormo.stockhub.model.Brand
+import com.joaovitormo.stockhub.model.StockPosition
 
-class ListCategoriesActivity : AppCompatActivity(), AdapterItems.RecyclerViewEvent, ManageCategoryFragment.ManageCategoryDialogListener  {
-    private lateinit var binding: ActivityListCategoriesBinding
+class ListStockPositionsActivity : AppCompatActivity(), AdapterItems.RecyclerViewEvent, ManageStockPositionFragment.ManageStockPositionDialogListener  {
+    private lateinit var binding: ActivityListStockPositionsBinding
     private lateinit var adapterItems: AdapterItems
     private var listItems: MutableList<Brand> = mutableListOf()
-    lateinit var listener: ManageCategoryFragment.ManageCategoryDialogListener
+    lateinit var listener: ManageStockPositionFragment.ManageStockPositionDialogListener
 
     //db
     private val db = FirebaseFirestore.getInstance()
@@ -29,7 +30,7 @@ class ListCategoriesActivity : AppCompatActivity(), AdapterItems.RecyclerViewEve
         super.onCreate(savedInstanceState)
         listener = this
 
-        binding = ActivityListCategoriesBinding.inflate(layoutInflater)
+        binding = ActivityListStockPositionsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initSearchView()
@@ -45,7 +46,7 @@ class ListCategoriesActivity : AppCompatActivity(), AdapterItems.RecyclerViewEve
 
 
         binding.btnNewItem.setOnClickListener{
-            val dialog = ManageCategoryFragment(listener)
+            val dialog = ManageStockPositionFragment(listener)
             dialog.show(supportFragmentManager, dialog.tag)
         }
 
@@ -81,7 +82,7 @@ class ListCategoriesActivity : AppCompatActivity(), AdapterItems.RecyclerViewEve
 
     private fun Items(){
 
-        db.collection("categories").orderBy("cName")
+        db.collection("stockPositions").orderBy("cName")
             .addSnapshotListener(object  : EventListener<QuerySnapshot> {
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                     if (error != null)
@@ -108,7 +109,7 @@ class ListCategoriesActivity : AppCompatActivity(), AdapterItems.RecyclerViewEve
         //actionbar
         val actionbar = supportActionBar
         //set actionbar title
-        actionbar!!.title = "Lista de Categorias"
+        actionbar!!.title = "Lista de Posições de Estoque"
         //set back button
         actionbar.setDisplayHomeAsUpEnabled(true)
         actionbar.setDisplayHomeAsUpEnabled(true)
@@ -127,13 +128,13 @@ class ListCategoriesActivity : AppCompatActivity(), AdapterItems.RecyclerViewEve
         val product = listItems[position].id
 
         val args = Bundle()
-        args.putString(ManageCategoryFragment.ITEM_ID, product.toString())
+        args.putString(ManageStockPositionFragment.ITEM_ID, product.toString())
 
         adapterItems.notifyDataSetChanged()
 
         //Log.d("IDPRODUCT", args.toString())
 
-        val dialog = ManageCategoryFragment(listener)
+        val dialog = ManageStockPositionFragment(listener)
         dialog.show(supportFragmentManager, dialog.tag)
         dialog.setArguments(args)
         //dialog.cancelDialog()
@@ -142,7 +143,7 @@ class ListCategoriesActivity : AppCompatActivity(), AdapterItems.RecyclerViewEve
 
     override fun editItem() {
         adapterItems.notifyDataSetChanged()
-        val intent = Intent(this, ListCategoriesActivity::class.java)
+        val intent = Intent(this, ListStockPositionsActivity::class.java)
         startActivity(intent)
         this.finish()
     }
