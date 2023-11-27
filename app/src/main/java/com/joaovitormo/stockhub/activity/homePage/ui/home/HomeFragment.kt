@@ -15,6 +15,7 @@ import com.joaovitormo.stockhub.activity.listBrands.ListBrandsActivity
 import com.joaovitormo.stockhub.activity.listCategories.ListCategoriesActivity
 import com.joaovitormo.stockhub.activity.listStockPositions.ListStockPositionsActivity
 import com.joaovitormo.stockhub.activity.listProducts.ListProductsActivity
+import com.joaovitormo.stockhub.activity.reportProducts.ReportProductsActivity
 import com.joaovitormo.stockhub.databinding.FragmentHomeBinding
 
 
@@ -68,6 +69,11 @@ class HomeFragment : Fragment() {
             listStockPositions()
         }
 
+        val btReportProducts: Button = binding.btReportList
+        btReportProducts.setOnClickListener {
+            reportProducts()
+        }
+
         return root
 
 
@@ -96,6 +102,12 @@ class HomeFragment : Fragment() {
 
     fun listStockPositions() {
         val intent = Intent(activity, ListStockPositionsActivity::class.java)
+        startActivity(intent)
+        activity?.finish()
+    }
+
+    fun reportProducts() {
+        val intent = Intent(activity, ReportProductsActivity::class.java)
         startActivity(intent)
         activity?.finish()
     }

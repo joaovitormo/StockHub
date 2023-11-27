@@ -16,7 +16,7 @@
         android:theme="@style/Theme.StockHub"
         tools:targetApi="31">
         <activity
-            android:name=".ReportProductsActivity"
+            android:name=".activity.reportProducts.ReportProductsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
