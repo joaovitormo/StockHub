@@ -74,6 +74,12 @@ class HomeFragment : Fragment() {
             reportProducts()
         }
 
+        val btRefreshKPI: Button = binding.btRefreshKPI
+        btRefreshKPI.setOnClickListener {
+            getCountProducts()
+            getSumProducts()
+        }
+
         return root
 
 
@@ -87,29 +93,29 @@ class HomeFragment : Fragment() {
     fun listProducts() {
         val intent = Intent(activity, ListProductsActivity::class.java)
         startActivity(intent)
-        activity?.finish()
+        //activity?.finish()
     }
     fun listBrands() {
         val intent = Intent(activity, ListBrandsActivity::class.java)
         startActivity(intent)
-        activity?.finish()
+        //activity?.finish()
     }
     fun listCategories() {
         val intent = Intent(activity, ListCategoriesActivity::class.java)
         startActivity(intent)
-        activity?.finish()
+        //activity?.finish()
     }
 
     fun listStockPositions() {
         val intent = Intent(activity, ListStockPositionsActivity::class.java)
         startActivity(intent)
-        activity?.finish()
+        //activity?.finish()
     }
 
     fun reportProducts() {
         val intent = Intent(activity, ReportProductsActivity::class.java)
         startActivity(intent)
-        activity?.finish()
+        //activity?.finish()
     }
 
 

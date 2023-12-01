@@ -112,9 +112,9 @@ class ListBrandsActivity : AppCompatActivity(), AdapterItems.RecyclerViewEvent, 
 
     }
     override fun onSupportNavigateUp(): Boolean {
-        val intent = Intent(this, HomePageActivity::class.java)
-        startActivity(intent)
-        this.finish()
+//        val intent = Intent(this, HomePageActivity::class.java)
+//        startActivity(intent)
+//      this.finish()
         onBackPressed()
         return true
     }
